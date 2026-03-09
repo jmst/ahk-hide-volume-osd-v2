@@ -16,7 +16,7 @@ class VolumeOsd
         ;get the window's ShowWindow setting
 	wp := Buffer(44)
         DllCall("GetWindowPlacement", "UInt", this.Handle(), "Ptr", wp)
-        state := NumGet(WP, 8, "UInt")
+        state := NumGet(wp, 8, "UInt")
 
         ;2 = SW_SHOWMINIMIZED, we're checking if it's minimized or not
         return state = 2
