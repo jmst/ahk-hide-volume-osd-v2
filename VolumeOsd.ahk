@@ -14,9 +14,8 @@ class VolumeOsd
         }
 
         ;get the window's ShowWindow setting
-        VarSetCapacity(wp, 44)
-        NumPut(44, wp)
-        DllCall("GetWindowPlacement", "UInt", this.Handle(), "UInt", &wp)
+	wp := Buffer(44)
+        DllCall("GetWindowPlacement", "UInt", this.Handle(), "Ptr", wp)
         state := NumGet(WP, 8, "UInt")
 
         ;2 = SW_SHOWMINIMIZED, we're checking if it's minimized or not
@@ -76,6 +75,7 @@ class VolumeOsd
 
         ;we will try 10 times, with increasing sleep delays between each attempt, to give the volume OSD time to be
         ;   created during logon
+	parentHandle := 0
         loop 10
         {
             loop
@@ -112,9 +112,9 @@ class VolumeOsd
             if(result = 0)
             {
                 ;but first, we'll wait a while to try again, waiting longer each time
-                Sleep, 1000 * (A_Index ** 2)
-                Send, {Volume_Up}
-                Send, {Volume_Down}
+                Sleep 1000 * (A_Index ** 2)
+                Send "{Volume_Up}"
+                Send "{Volume_Down}"
             } else {
                 ;we found the window! stop looping
                 break
